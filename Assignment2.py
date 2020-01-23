@@ -1,7 +1,6 @@
 import numpy as np
 import cv2
 
-
 import matplotlib.pyplot as plt
 import skimage
 
@@ -19,8 +18,8 @@ plt.gray()
 plt.imshow(lena_gray)
 plt.show()
 
-def plotnoise(lena_gray, mode, r, c, i):
-    plt.subplot(r,c,i)
+def plotnoise(lena_gray, mode, row, col, i):
+    plt.subplot(row,col,i)
     if mode is not None:
         gimg = skimage.util.random_noise(lena_gray, mode=mode)
         plt.imshow(gimg)
@@ -30,12 +29,12 @@ def plotnoise(lena_gray, mode, r, c, i):
     plt.axis("off")
 
 plt.figure(figsize=(30,40))
-r=3
-c=2
-plotnoise(lena_gray, None, r,c,1)
-plotnoise(lena_gray, "gaussian", r,c,2)
-plotnoise(lena_gray, "salt", r,c,3)
-plotnoise(lena_gray, "pepper", r,c,4)
-plotnoise(lena_gray, "s&p", r,c,5)
-plotnoise(lena_gray, "speckle", r,c,6)
+row=3
+col=2
+plotnoise(lena_gray, None, row,col,1)
+plotnoise(lena_gray, "gaussian", row,col,2)
+plotnoise(lena_gray, "salt", row,col,3)
+plotnoise(lena_gray, "pepper", row,col,4)
+plotnoise(lena_gray, "s&p", row,col,5)
+plotnoise(lena_gray, "speckle", row,col,6)
 plt.show()

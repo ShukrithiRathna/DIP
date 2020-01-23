@@ -4,15 +4,15 @@ Digital Image Processing Coursework
 #### Assignment 1
 
 1. Read a matrix of size 5*5 and find the following by using a user-defined function.
-    i. sum
-    ii. maximum
-    iii.mean  
-    iv.median
-    v.mode
-    vi.standard deviation
-    v. frequency distribution
 
-2. Read the matrix size through keyboard and create a random matrix of integers ranging from  0 to 10 and compute all the above functions listed in question 1. 
+   * Sum
+   * Maximum
+   * Mean
+   * Median
+   * Mode
+   * Standard Deviation
+   * Frequency Distribution
+2. Read the matrix size through keyboard and create a random matrix of integers ranging from  0 to 10 and compute all the above functions listed in question 1.
 
 #### Assignment 2
 
