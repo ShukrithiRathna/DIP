@@ -52,7 +52,12 @@ for row in mat:
         Max=max(row)
     Sum+=sum(row)
 mean=Sum/5
-median=arr[13]
+num_ele=len(arr)
+print("Number of elements:",num_ele)
+if(num_ele%2==0):
+    median=arr[(num_ele/2)+1]
+else:
+    median=arr[((num_ele+1)/2)]
 
 #mode=most_frequent(arr)
 
@@ -64,6 +69,7 @@ StdDev = (SSE/len(arr)-1)**(1/2)
 mode=0
 
 print(mat)
+print(arr)
 print("Sum:", Sum,"Max:",Max)
 print("Mean:",mean,"Median:",median)
 print("Standard Deviation:",StdDev)
