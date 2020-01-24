@@ -9,11 +9,14 @@ lena = cv2.imread('lena.jpeg')
 
 #print matrix
 print("Lena:",lena)
+
 plt.imshow(lena)
 plt.show()
 
 lena_gray=cv2.imread('lena.jpeg',0)
+
 print(lena_gray)
+
 plt.gray()
 plt.imshow(lena_gray)
 plt.show()
