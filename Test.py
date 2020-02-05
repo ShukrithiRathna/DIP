@@ -1,19 +1,23 @@
 import numpy as np
 import cv2
+import math
+from scipy import ndimage
+from matplotlib import pyplot as plt
+img_before = cv2.imread('Pisa.jpeg')
 
-import matplotlib.pyplot as plt
-import skimage
+cv2.imshow("Before", img_before)    
+key = cv2.waitKey(0)
 
-img = cv2.imread("lena.jpg", 0)
-'''
-Mat noise = Mat(im.size(), CV_8U)
-Scalar a(0);
-Scalar b(20) ;
-randn(noise,a,b);
-imshow("noise",noise);
-imshow("add",im + noise);
-waitKey();'''
-m = (50,50,50) 
-s = (50,50,50)
-cv2.randn(img,m,s)
-cv2.imshow(img)
+img_gray = cv2.cvtColor(img_before, cv2.COLOR_BGR2GRAY)
+img_edges = cv2.Canny(img_gray, 100, 100, apertureSize=3)
+lines = cv2.HoughLinesP(img_edges, 1, math.pi / 180.0, 100, minLineLength=100, maxLineGap=5)
+
+img = cv2.imread('Pisa.jpeg',0)
+edges = cv2.Canny(img,100,200)
+
+plt.subplot(121),plt.imshow(img,cmap = 'gray')
+plt.title('Original Image'), plt.xticks([]), plt.yticks([])
+plt.subplot(122),plt.imshow(edges,cmap = 'gray')
+plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
+
+plt.show()
