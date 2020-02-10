@@ -3,9 +3,9 @@ import cv2
 
 #path = "C:\Users\Lenovo\Downloads\pout-dark.jpg"
 img = cv2.imread('pout-dark.jpg',0)
-
+before_img = cv2.imread('pout-dark.jpg',0)
 #To display image before equalization
-cv2.imshow('image',img)
+#cv2.imshow('Before Equalization',img)
 cv2.waitKey(0)
 
 
@@ -20,7 +20,7 @@ for i in range(width):
         g = img[j,i]
         a[g] = a[g]+1
 
-print(a)  
+#print(a)  
 
 
 #performing histogram equalization
@@ -35,15 +35,15 @@ for i in range(256):
 # b now contains the equalized histogram
 b=b.astype(np.uint8)
 
-print(b)
+#print(b)
 
 #Re-map values from equalized histogram into the image
 for i in range(width):
     for j in range(height):
         g = img[j,i]
         img[j,i]= b[g]
-
-cv2.imshow('image',img)
+cv2.imshow('Before Equalization',before_img)
+cv2.imshow('After',img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
