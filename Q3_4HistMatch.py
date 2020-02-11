@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
 
-def find_nearest_above(my_array, target):
-    diff = my_array - target
+def find_nearest_above(ref, actual):
+    diff = ref - actual
     mask = np.ma.less_equal(diff, -1)
     # We need to mask the negative differences
     # since we are looking for values above
@@ -14,36 +14,37 @@ def find_nearest_above(my_array, target):
 def hist_match(original, specified):
 
     oldshape = original.shape
-    original = original.ravel()
+    original = original.ravel() #converts matrix to 1d array
     specified = specified.ravel()
 
     # get the set of unique pixel values and their corresponding indices and counts
-    s_values, bin_idx, s_counts = np.unique(original, return_inverse=True,return_counts=True)
-    t_values, t_counts = np.unique(specified, return_counts=True)
+    original_values, bin_idx, original_counts = np.unique(original, return_inverse=True,return_counts=True)
+    ref_values, ref_counts = np.unique(specified, return_counts=True)
 
     # Calculate s_k for original image
-    s_quantiles = np.cumsum(s_counts).astype(np.float64)
-    s_quantiles /= s_quantiles[-1]
+    original_quantiles = np.cumsum(original_counts).astype(np.float64)
+    original_quantiles /=original_quantiles[-1]
     
     # Calculate s_k for specified image
-    t_quantiles = np.cumsum(t_counts).astype(np.float64)
-    t_quantiles /= t_quantiles[-1]
+    ref_quantiles = np.cumsum(ref_counts).astype(np.float64)
+    ref_quantiles /=ref_quantiles[-1]
+    
 
     # Round the values
-    sour = np.around(s_quantiles*255)
-    temp = np.around(t_quantiles*255)
+    original_temp = np.around(original_quantiles*255)
+    ref_temp = np.around(ref_quantiles*255)
     
     # Map the rounded values
     b=[]
-    for data in sour[:]:
-        b.append(find_nearest_above(temp,data))
+    for data in original_temp[:]:
+        b.append(find_nearest_above(ref_temp,data))
     b= np.array(b,dtype='uint8')
 
     return b[bin_idx].reshape(oldshape)
 
 # Load the images in greyscale
-original = cv2.imread('pout-bright.jpg',0)
-specified = cv2.imread('pout-dark.jpg',0)
+original = cv2.imread('pout-dark.jpg',0)
+specified = cv2.imread('pout-bright.jpg',0)
 
 # perform Histogram Matching
 a = hist_match(original, specified)
@@ -52,5 +53,5 @@ a = hist_match(original, specified)
 cv2.imshow('MatchedImage',np.array(a,dtype='uint8'))
 cv2.imshow('Original-PoutBright',original)
 cv2.imshow('Specified-PoutDark',specified)
-cv2.waitKey(0)
+cv2.waitKey(0)  
 cv2.destroyAllWindows()
