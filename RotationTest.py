@@ -12,7 +12,7 @@ for angle  in range(3,15,3):
     hgt=img.shape[0]
     wdt=img.shape[1]
 
-    #print(img.shape)
+    print(img.shape)
     new=np.zeros([224,225],dtype=np.uint8)
     rotated=np.zeros([224,225],dtype=np.uint8)
     # cv2.imshow('original',img)
