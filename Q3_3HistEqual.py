@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import matplotlib.pyplot as plt
 
 #path = "C:\Users\Lenovo\Downloads\pout-dark.jpg"
 img = cv2.imread('pout-dark.jpg',0)
@@ -20,6 +21,8 @@ for i in range(width):
         g = img[j,i]
         a[g] = a[g]+1
 
+plt.hist(g, bins = 10 )
+plt.show()
 #print(a)  
 
 
@@ -32,10 +35,14 @@ for i in range(256):
         b[i] += a[j] * tmp;
     b[i] = round(b[i] * 255);
 
+plt.hist(b,bins = 10)
+plt.show()
+
 # b now contains the equalized histogram
 b=b.astype(np.uint8)
 
-#print(b)
+plt.hist(b,bins = 10)
+plt.show()
 
 #Re-map values from equalized histogram into the image
 for i in range(width):
