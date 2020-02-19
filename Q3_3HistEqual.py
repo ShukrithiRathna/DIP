@@ -21,10 +21,6 @@ for i in range(width):
         g = img[j,i]
         a[g] = a[g]+1
 
-plt.hist(g, bins = 10 )
-plt.show()
-#print(a)  
-
 
 #performing histogram equalization
 tmp = 1.0/(height*width)
@@ -35,22 +31,25 @@ for i in range(256):
         b[i] += a[j] * tmp;
     b[i] = round(b[i] * 255);
 
-plt.hist(b,bins = 10)
-plt.show()
-
 # b now contains the equalized histogram
 b=b.astype(np.uint8)
-
-plt.hist(b,bins = 10)
-plt.show()
 
 #Re-map values from equalized histogram into the image
 for i in range(width):
     for j in range(height):
         g = img[j,i]
         img[j,i]= b[g]
+
+
 cv2.imshow('Before Equalization',before_img)
 cv2.imshow('After',img)
+
+#Printing Histograms of the images
+plt.hist(before_img.ravel(),256,[0,256])
+plt.hist(img.ravel(),256,[0,256])
+plt.show()
+
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
