@@ -1,6 +1,6 @@
 import numpy as np
 
-x = np.random.random(10)
+x = np.random.randint(8,16,8)
 
 def FFT(x):
     F=[]
@@ -16,6 +16,7 @@ x = np.random.random(10)
 x = np.asarray(x)
 # N = x.shape[0]
 print(FFT(x))
+print("Inbuilt",np.fft.fft(x) )
 print(np.allclose(np.fft.fft(x),FFT(x)))
 
 

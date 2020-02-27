@@ -4,9 +4,9 @@ import cmath
 import matplotlib.pyplot as plt
 
 lena = cv2.imread("lena.jpeg",0)
-l = np.array(lena)
+lena = np.array(lena)
 dog = cv2.imread("dog.png",0)
-d = np.array(dog)
+dog = np.array(dog)
 
 def FFT(x):
     F=[]
@@ -29,75 +29,82 @@ def IFFT(x):
             sum=sum+(x[y]*(np.exp(2j * np.pi * U * y / N)))
         F.append(sum/N)
     return(F)
+row_FFT=[] #To store result of row-wise 1-dog FFT
+col_FFT = np.zeros((lena.shape[0],lena.shape[1]),dtype=complex) #To store result of col-wise 1-dog FFT
 
-temp=[]
-Ftemp = np.zeros((l.shape[0],l.shape[1]),dtype=complex)
-
-M = l.shape[0]
-
+M = lena.shape[0]
+#row-wise FFT
 for i in range(0,M):
-    temp.append(FFT(l[i]))
+    row_FFT.append(FFT(lena[i]))
+row_FFT = np.array(row_FFT)
 
-temp = np.array(temp)
-
-N = l.shape[1]
+#col-wise FFT
+N = lena.shape[1]
 for i in range(0,N):
-    Ftemp[:,i] = FFT(temp[:,i])
-# Ftemp=np.fft.fft2(l)
-print(Ftemp.shape)
+    col_FFT[:,i] = FFT(row_FFT[:,i])
+
+
+
+#separataing phase and magnitude of Lena
 lena_phase = [] 
 lena_mag = []
 
-lena_phase=np.angle(Ftemp)
-lena_mag=np.abs(Ftemp)
-plt.imshow(lena_phase,cmap='gray')
-# plt.show()
+lena_phase=np.angle(col_FFT)
+lena_mag=np.log(np.abs(col_FFT))
 
-plt.imshow(lena_mag,cmap='gray')
-# plt.show()
+lena_phase_inbuilt=np.angle(np.fft.fft2(lena))
+lena_mag_inbuilt=np.log(np.abs(np.fft.fft2(lena)))
 
-temp=[]
-Ftemp = np.zeros((d.shape[0],d.shape[1]),dtype=complex)
+row_FFT=[]#To store result of row-wise 1-dog FFT
+col_FFT = np.zeros((dog.shape[0],dog.shape[1]),dtype=complex) #To store result of col-wise 1-dog FFT
 
-M = d.shape[0]
-print(d.shape)
+#row-wise  FFT dog
+M = dog.shape[0]
+print(dog.shape)
 for i in range(0,M):
-    temp.append(FFT(d[i]))
+    row_FFT.append(FFT(dog[i]))
 
-temp = np.array(temp)
+row_FFT = np.array(row_FFT)
 
-N = d.shape[1]
+#col-wise FFT dog
+N = dog.shape[1]
 for i in range(0,N):
-    Ftemp[:,i] = FFT(temp[:,i])
+    col_FFT[:,i] = FFT(row_FFT[:,i])
 
-# Ftemp=np.fft.fft2(d)
+#separataing phase and magnitude of dog
 dog_phase = [] 
 dog_mag = []
 
-dog_phase=np.angle(Ftemp)
-dog_mag=np.abs(Ftemp)
-plt.imshow(dog_phase,cmap='gray')
-# plt.show()
+dog_phase=np.angle(col_FFT)
+dog_mag=np.log(np.abs(col_FFT))
 
-plt.imshow(dog_mag,cmap='gray')
-# plt.show()
+dog_phase_inbuilt=np.angle(np.fft.fft2(dog))
+dog_mag_inbuilt=np.log(np.abs(np.fft.fft2(dog)))
 
+
+#combining phase and magnitude of dog and lena resp.  
 combined=np.multiply(lena_mag,np.exp(1j*dog_phase))
-check = combined
+
+
+#IFFT to get output
 M = combined.shape[0]
-temp=[]
-Ftemp = np.zeros((combined.shape[0],combined.shape[1]),dtype=complex)
+row_IFFT=[]
+col_IFFT = np.zeros((combined.shape[0],combined.shape[1]),dtype=complex)
+
+#performing row-wise 1-d IFFT
 for i in range(0,M):
-    temp.append(IFFT(combined[i]))
-
-Ftemp = np.array(temp)
-FFtemp = np.zeros((combined.shape[0],combined.shape[1]),dtype=complex)
-
+    row_IFFT.append(IFFT(combined[i]))
+row_IFFT = np.array(row_IFFT)
+print(row_IFFT.shape)
 N = combined.shape[1]
 for i in range(0,N):
-    FFtemp[:,i] = IFFT(Ftemp[:,i])
-combined=np.asarray(FFtemp)
+    col_IFFT[:,i] = IFFT(row_IFFT[:,i])
+IFFTcombined=np.asarray(col_IFFT)
 
-plt.title('Lena mag + Dog Phase')
-plt.imshow( np.real(combined),cmap='gray')
+
+plt.title('Lena Mag + Dog Phase')
+plt.imshow( np.real(IFFTcombined),cmap='gray')
+plt.show()
+plt.title('Lena mag + Dog phase inbuilt')
+plt.imshow(np.real(np.fft.ifft2(combined)),cmap='gray')
 plt.show()
