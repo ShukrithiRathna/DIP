@@ -33,15 +33,16 @@ N = l.shape[1]
 for i in range(0,N):
     Ftemp[:,i] = FFT(temp[:,i])
 
-LP = [] 
-LM = []
+lena_phase = [] 
+lena_mag = []
 
-LP=np.angle(Ftemp)
-LM=20*np.log(np.abs(Ftemp))
-plt.imshow(LP,cmap='gray')
+lena_phase=np.angle(Ftemp)
+lena_mag=20*np.log(np.abs(Ftemp))
+plt.title('Lena phase')
+plt.imshow(lena_phase,cmap='gray')
 plt.show()
-
-plt.imshow(LM,cmap='gray')
+plt.title('Lena Mag')
+plt.imshow(lena_mag,cmap='gray')
 plt.show()
 
 temp=[]
@@ -58,14 +59,15 @@ N = d.shape[1]
 for i in range(0,N):
     Ftemp[:,i] = FFT(temp[:,i])
 
-DP = [] 
-DM = []
+dog_phase = [] 
+dog_mag = []
 
-DP=np.angle(Ftemp)
-DM=20*np.log(np.abs(Ftemp))
-plt.imshow(DP,cmap='gray')
+dog_phase=np.angle(Ftemp)
+dog_mag=20*np.log(np.abs(Ftemp))
+plt.title('Dog phase')
+plt.imshow(,dog_phase,cmap='gray')
 plt.show()
-
-plt.imshow(DM,cmap='gray')
+plt.title('Dog Mag')
+plt.imshow('Dog Mag',dog_mag,cmap='gray')
 plt.show()
 

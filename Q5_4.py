@@ -19,6 +19,17 @@ def FFT(x):
         F.append(sum)
     return(F)
 
+def IFFT(x):
+    F=[]
+    #x = np.asarray(x, dtype=float)
+    N = x.shape[0]
+    for U in range(0,N):
+        sum=0
+        for y in range(0,N):
+            sum=sum+(x[y]*(np.exp(2j * np.pi * U * y / N)))
+        F.append(sum/N)
+    return(F)
+
 temp=[]
 Ftemp = np.zeros((l.shape[0],l.shape[1]),dtype=complex)
 
@@ -34,16 +45,16 @@ for i in range(0,N):
     Ftemp[:,i] = FFT(temp[:,i])
 # Ftemp=np.fft.fft2(l)
 print(Ftemp.shape)
-LP = [] 
-LM = []
+lena_phase = [] 
+lena_mag = []
 
-LP=np.angle(Ftemp)
-LM=np.abs(Ftemp)
-plt.imshow(LP,cmap='gray')
-plt.show()
+lena_phase=np.angle(Ftemp)
+lena_mag=np.abs(Ftemp)
+plt.imshow(lena_phase,cmap='gray')
+# plt.show()
 
-plt.imshow(LM,cmap='gray')
-plt.show()
+plt.imshow(lena_mag,cmap='gray')
+# plt.show()
 
 temp=[]
 Ftemp = np.zeros((d.shape[0],d.shape[1]),dtype=complex)
@@ -60,18 +71,34 @@ for i in range(0,N):
     Ftemp[:,i] = FFT(temp[:,i])
 
 # Ftemp=np.fft.fft2(d)
-DP = [] 
-DM = []
+dog_phase = [] 
+dog_mag = []
 
-DP=np.angle(Ftemp)
-DM=np.abs(Ftemp)
-plt.imshow(DP,cmap='gray')
-plt.show()
+dog_phase=np.angle(Ftemp)
+dog_mag=np.abs(Ftemp)
+plt.imshow(dog_phase,cmap='gray')
+# plt.show()
 
-plt.imshow(DM,cmap='gray')
-plt.show()
+plt.imshow(dog_mag,cmap='gray')
+# plt.show()
 
-combined=np.real(np.multiply(DM,np.exp(1j*LP)))
+combined=np.multiply(dog_mag,np.exp(1j*lena_phase))
+check = combined
+M = combined.shape[0]
+temp=[]
+Ftemp = np.zeros((combined.shape[0],combined.shape[1]),dtype=complex)
+for i in range(0,M):
+    temp.append(IFFT(combined[i]))
 
-plt.imshow(np.real(np.fft.ifft2(combined)),cmap='gray')
+Ftemp = np.array(temp)
+FFtemp = np.zeros((combined.shape[0],combined.shape[1]),dtype=complex)
+
+N = combined.shape[1]
+for i in range(0,N):
+    FFtemp[:,i] = IFFT(Ftemp[:,i])
+combined=np.asarray(FFtemp)
+
+# print(np.fft.ifft2(check),'\n',combined)
+plt.title('Lena phase + Dog Mag')
+plt.imshow( np.real(combined),cmap='gray')
 plt.show()
