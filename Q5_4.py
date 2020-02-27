@@ -32,12 +32,13 @@ temp = np.array(temp)
 N = l.shape[1]
 for i in range(0,N):
     Ftemp[:,i] = FFT(temp[:,i])
-
+# Ftemp=np.fft.fft2(l)
+print(Ftemp.shape)
 LP = [] 
 LM = []
 
 LP=np.angle(Ftemp)
-LM=20*np.log(np.abs(Ftemp))
+LM=np.abs(Ftemp)
 plt.imshow(LP,cmap='gray')
 plt.show()
 
@@ -58,14 +59,19 @@ N = d.shape[1]
 for i in range(0,N):
     Ftemp[:,i] = FFT(temp[:,i])
 
+# Ftemp=np.fft.fft2(d)
 DP = [] 
 DM = []
 
 DP=np.angle(Ftemp)
-DM=20*np.log(np.abs(Ftemp))
+DM=np.abs(Ftemp)
 plt.imshow(DP,cmap='gray')
 plt.show()
 
 plt.imshow(DM,cmap='gray')
 plt.show()
 
+combined=np.real(np.multiply(DM,np.exp(1j*LP)))
+
+plt.imshow(np.real(np.fft.ifft2(combined)),cmap='gray')
+plt.show()
